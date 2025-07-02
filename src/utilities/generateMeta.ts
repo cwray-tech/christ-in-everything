@@ -26,9 +26,7 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Christ in Everything'
-    : 'Christ in Everything'
+  const title = doc?.meta?.title ? doc.meta.title : 'Christ in Everything'
 
   return {
     description: doc?.meta?.description,
