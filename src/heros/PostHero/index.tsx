@@ -1,5 +1,5 @@
-import { formatDateTime } from 'src/utilities/formatDateTime'
 import React from 'react'
+import { formatDateTime } from 'src/utilities/formatDateTime'
 
 import type { Post } from '@/payload-types'
 
@@ -16,7 +16,11 @@ export const PostHero: React.FC<{
 
   return (
     <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
+      <div
+        className={`container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] pb-8 ${
+          heroImage && typeof heroImage !== 'string' ? 'text-white' : ''
+        }`}
+      >
         <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
           <div className="uppercase text-sm mb-6">
             {categories?.map((category, index) => {
@@ -52,6 +56,7 @@ export const PostHero: React.FC<{
                 </div>
               </div>
             )}
+            {}
             {publishedAt && (
               <div className="flex flex-col gap-1">
                 <p className="text-sm">Date Published</p>
@@ -66,7 +71,11 @@ export const PostHero: React.FC<{
         {heroImage && typeof heroImage !== 'string' && (
           <Media fill priority imgClassName="-z-10 object-cover" resource={heroImage} />
         )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
+        <div
+          className={`absolute pointer-events-none left-0 bottom-0 w-full h-full ${
+            heroImage && typeof heroImage !== 'string' ? 'bg-gray-400 opacity-50' : ''
+          }`}
+        />
       </div>
     </div>
   )

@@ -1,9 +1,9 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { ArchiveBlock as ArchiveBlockProps, Post } from '@/payload-types'
 
+import RichText from '@/components/RichText'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import RichText from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 
@@ -29,6 +29,8 @@ export const ArchiveBlock: React.FC<
     const fetchedPosts = await payload.find({
       collection: 'posts',
       depth: 1,
+      draft: false,
+      overrideAccess: false,
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0
         ? {
@@ -51,15 +53,19 @@ export const ArchiveBlock: React.FC<
       posts = filteredSelectedPosts
     }
   }
-
+  const hasPosts = posts.length > 0
   return (
-    <div className="my-16" id={`block-${id}`}>
-      {introContent && (
-        <div className="container mb-16">
-          <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
+    <>
+      {hasPosts && (
+        <div className="my-16" id={`block-${id}`}>
+          {introContent && (
+            <div className="container mb-16">
+              <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
+            </div>
+          )}
+          <CollectionArchive posts={posts} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
-    </div>
+    </>
   )
 }

@@ -1,29 +1,17 @@
-import clsx from 'clsx'
-import React from 'react'
-
-interface Props {
-  className?: string
-  loading?: 'lazy' | 'eager'
-  priority?: 'auto' | 'high' | 'low'
-}
-
-export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
-
+export const Logo = () => {
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
-    />
+    <div className="flex items-center font-serif justify-start gap-2 text-current">
+      <svg
+        fill="none"
+        width="24"
+        height="30"
+        viewBox="0 0 35 40"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect x="18" y="5" width="4" height="30" className="fill-current" />
+        <rect x="8" y="15" width="24" height="4" className="fill-current" />
+      </svg>
+      <span className="text-sm font-bold">Christ in Everything</span>
+    </div>
   )
 }

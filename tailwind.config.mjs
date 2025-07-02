@@ -1,5 +1,5 @@
-import tailwindcssAnimate from 'tailwindcss-animate'
 import typography from '@tailwindcss/typography'
+import tailwindcssAnimate from 'tailwindcss-animate'
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -95,7 +95,8 @@ const config = {
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
-        sans: ['var(--font-geist-sans)'],
+        sans: ['var(--font-playfair)'],
+        serif: ['var(--font-playfair)'],
       },
       keyframes: {
         'accordion-down': {

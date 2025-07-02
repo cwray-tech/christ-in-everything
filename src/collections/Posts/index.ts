@@ -18,6 +18,7 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
+import { slugField } from '@/fields/slug'
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -25,7 +26,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -122,6 +122,16 @@ export const Posts: CollectionConfig<'posts'> = {
               },
               hasMany: true,
               relationTo: 'posts',
+            },
+            {
+              name: 'series',
+              type: 'join',
+              collection: 'series',
+              on: 'posts',
+              hasMany: true,
+              admin: {
+                position: 'sidebar',
+              },
             },
             {
               name: 'categories',

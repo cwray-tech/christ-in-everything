@@ -1,6 +1,6 @@
+import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import RichText from '@/components/RichText'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
@@ -33,7 +33,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
               >
                 {richText && <RichText data={richText} enableGutter={false} />}
 
-                {enableLink && <CMSLink {...link} />}
+                {enableLink && <CMSLink {...link} className="mt-4" />}
               </div>
             )
           })}
