@@ -30,7 +30,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
 
       {/* Mobile Navigation Toggle */}
       <button
-        className="md:hidden p-2 rounded-full hover:bg-muted transition-colors"
+        className="md:hidden z-10 p-2 rounded-full hover:bg-muted transition-colors"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
       >
@@ -43,7 +43,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-background shadow-md py-4 md:hidden">
+        <div className="absolute top-0 bg-background left-0 right-0 shadow-md pt-20 pb-4 md:hidden">
           <div className="container">
             <nav className="flex flex-col gap-4">
               {navItems.map(({ link }, i) => {
@@ -52,7 +52,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                     <CMSLink
                       {...link}
                       appearance="link"
-                      className="text-foreground/80 hover:text-primary transition-colors font-medium py-2 block"
+                      className="text-foreground/80 hover:text-primary transition-colors font-medium py-2 px-2 block"
                     />
                   </div>
                 )
