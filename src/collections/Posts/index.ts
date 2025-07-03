@@ -110,9 +110,6 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'relatedPosts',
               type: 'relationship',
-              admin: {
-                position: 'sidebar',
-              },
               filterOptions: ({ id }) => {
                 return {
                   id: {
@@ -125,13 +122,9 @@ export const Posts: CollectionConfig<'posts'> = {
             },
             {
               name: 'series',
-              type: 'join',
-              collection: 'series',
-              on: 'posts',
+              type: 'relationship',
+              relationTo: 'series',
               hasMany: true,
-              admin: {
-                position: 'sidebar',
-              },
             },
             {
               name: 'categories',
@@ -202,6 +195,15 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       hasMany: true,
       relationTo: 'users',
+    },
+    {
+      name: 'keyPassages',
+      type: 'relationship',
+      relationTo: 'scripture-references',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+      },
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy

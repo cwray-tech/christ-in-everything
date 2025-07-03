@@ -73,6 +73,7 @@ export interface Config {
     series: Series;
     categories: Category;
     users: User;
+    'scripture-references': ScriptureReference;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -82,11 +83,7 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    posts: {
-      series: 'series';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -94,6 +91,7 @@ export interface Config {
     series: SeriesSelect<false> | SeriesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'scripture-references': ScriptureReferencesSelect<false> | ScriptureReferencesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -237,11 +235,7 @@ export interface Post {
     [k: string]: unknown;
   };
   relatedPosts?: (string | Post)[] | null;
-  series?: {
-    docs?: (string | Series)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
+  series?: (string | Series)[] | null;
   categories?: (string | Category)[] | null;
   meta?: {
     title?: string | null;
@@ -253,6 +247,7 @@ export interface Post {
   };
   publishedAt?: string | null;
   authors?: (string | User)[] | null;
+  keyPassages?: (string | ScriptureReference)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -364,7 +359,6 @@ export interface Media {
 export interface Series {
   id: string;
   title: string;
-  posts?: (string | Post)[] | null;
   image?: (string | null) | Media;
   description: string;
   slug?: string | null;
@@ -417,6 +411,18 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scripture-references".
+ */
+export interface ScriptureReference {
+  id: string;
+  reference: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -958,6 +964,10 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
+        relationTo: 'scripture-references';
+        value: string | ScriptureReference;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -1267,6 +1277,7 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  keyPassages?: T;
   populatedAuthors?:
     | T
     | {
@@ -1285,7 +1296,6 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface SeriesSelect<T extends boolean = true> {
   title?: T;
-  posts?: T;
   image?: T;
   description?: T;
   slug?: T;
@@ -1335,6 +1345,17 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scripture-references_select".
+ */
+export interface ScriptureReferencesSelect<T extends boolean = true> {
+  reference?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

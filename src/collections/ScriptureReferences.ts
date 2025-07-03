@@ -4,8 +4,8 @@ import { slugField } from '@/fields/slug'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 
-export const Series: CollectionConfig = {
-  slug: 'series',
+export const ScriptureReferences: CollectionConfig = {
+  slug: 'scripture-references',
   access: {
     create: authenticated,
     delete: authenticated,
@@ -13,23 +13,12 @@ export const Series: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['title', 'updatedAt'],
-    useAsTitle: 'title',
+    useAsTitle: 'reference',
   },
   fields: [
     {
-      name: 'title',
+      name: 'reference',
       type: 'text',
-      required: true,
-    },
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
       required: true,
     },
     ...slugField(),
