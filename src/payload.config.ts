@@ -25,6 +25,13 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta: {
+      titleSuffix: ' - Christ in Everything Admin',
+      icons: {
+        icon: '/favicon.svg',
+      },
+    },
+
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
@@ -32,6 +39,10 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: [],
+      graphics: {
+        Logo: '@/graphics/Logo',
+        Icon: '@/graphics/Logo',
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -65,7 +76,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Media, Posts, Series, Categories, Users, ScriptureReferences],
+  collections: [Pages, Media, Posts, Series, Categories, ScriptureReferences, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
