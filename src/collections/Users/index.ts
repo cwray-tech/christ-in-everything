@@ -15,7 +15,16 @@ export const Users: CollectionConfig = {
     defaultColumns: ['name', 'email'],
     useAsTitle: 'name',
   },
-  auth: true,
+  auth: {
+    tokenExpiration: 7200,
+    verify: true,
+    maxLoginAttempts: 5,
+    lockTime: 600 * 1000,
+    cookies: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+    },
+  },
   fields: [
     {
       name: 'name',
