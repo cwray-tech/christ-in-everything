@@ -4,17 +4,11 @@ import { formatDateTime } from 'src/utilities/formatDateTime'
 import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { formatAuthors } from '@/utilities/formatAuthors'
 
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, heroImage, populatedAuthors, publishedAt, title, keyPassages } = post
-
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
-
-  const hasKeyPassages = keyPassages && keyPassages.length > 0
+  const { categories, heroImage, publishedAt, title } = post
 
   return (
     <div className="relative -mt-[10.4rem] flex items-end">
@@ -48,47 +42,13 @@ export const PostHero: React.FC<{
             <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
+          {publishedAt && (
+            <div className="flex flex-col gap-1">
+              <p className="text-sm">Date Published</p>
 
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
-            )}
-            {hasKeyPassages && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Key Passages</p>
-
-                {keyPassages?.map((keyPassage, index) => {
-                  if (typeof keyPassage === 'object' && keyPassage !== null) {
-                    const { reference } = keyPassage
-
-                    const titleToUse = reference || 'Unknown reference'
-
-                    const isLast = index === keyPassages.length - 1
-
-                    return (
-                      <React.Fragment key={index}>
-                        {titleToUse}
-                        {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                      </React.Fragment>
-                    )
-                  }
-                  return null
-                })}
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
+              <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
+            </div>
+          )}
         </div>
       </div>
       <div className="min-h-[80vh] select-none">
