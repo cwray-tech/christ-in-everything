@@ -66,42 +66,40 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          <RichText
-            className="max-w-[48rem] mx-auto text-wrap"
-            data={post.content}
-            enableGutter={false}
-          />
-          <div className="grid gap-4 mt-6">
-            {hasAuthors && (
-              <div className="flex flex-col gap-2">
-                <p className="text-sm">By</p>
-                <p className="text-sm">{formatAuthors(populatedAuthors)}</p>
-              </div>
-            )}
-            {hasKeyPassages && (
-              <div className="flex flex-col gap-2">
-                <p className="text-sm">Key Passages</p>
-                <p className="text-sm">
-                  {keyPassages?.map((keyPassage, index) => {
-                    if (typeof keyPassage === 'object' && keyPassage !== null) {
-                      const { reference } = keyPassage
+          <div className="max-w-[48rem] mx-auto grid gap-6">
+            <RichText data={post.content} enableGutter={false} />
+            <div className="grid gap-4">
+              {hasAuthors && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm">By</p>
+                  <p className="text-sm">{formatAuthors(populatedAuthors)}</p>
+                </div>
+              )}
+              {hasKeyPassages && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm">Key Passages</p>
+                  <p className="text-sm">
+                    {keyPassages?.map((keyPassage, index) => {
+                      if (typeof keyPassage === 'object' && keyPassage !== null) {
+                        const { reference } = keyPassage
 
-                      const titleToUse = reference || 'Unknown reference'
+                        const titleToUse = reference || 'Unknown reference'
 
-                      const isLast = index === keyPassages.length - 1
+                        const isLast = index === keyPassages.length - 1
 
-                      return (
-                        <React.Fragment key={index}>
-                          {titleToUse}
-                          {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                        </React.Fragment>
-                      )
-                    }
-                    return null
-                  })}
-                </p>
-              </div>
-            )}
+                        return (
+                          <React.Fragment key={index}>
+                            {titleToUse}
+                            {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
+                          </React.Fragment>
+                        )
+                      }
+                      return null
+                    })}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           {post.relatedPosts && post.relatedPosts.length > 0 && (
