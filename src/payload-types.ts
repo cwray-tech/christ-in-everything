@@ -235,7 +235,7 @@ export interface Post {
     [k: string]: unknown;
   };
   relatedPosts?: (string | Post)[] | null;
-  series?: (string | Series)[] | null;
+  series?: (string | null) | Series;
   categories?: (string | Category)[] | null;
   meta?: {
     title?: string | null;

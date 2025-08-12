@@ -124,7 +124,7 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'series',
               type: 'relationship',
               relationTo: 'series',
-              hasMany: true,
+              hasMany: false,
             },
             {
               name: 'categories',

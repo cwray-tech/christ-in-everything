@@ -8,7 +8,7 @@ import { Media } from '@/components/Media'
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, heroImage, publishedAt, title } = post
+  const { categories, heroImage, publishedAt, title, series } = post
 
   return (
     <div className="relative -mt-[10.4rem] flex items-end">
@@ -41,6 +41,13 @@ export const PostHero: React.FC<{
           <div className="">
             <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
           </div>
+          {series && typeof series === 'object' && series.title && (
+            <div className="mb-4">
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+                {series.title}
+              </span>
+            </div>
+          )}
 
           {publishedAt && (
             <div className="flex flex-col gap-1">
