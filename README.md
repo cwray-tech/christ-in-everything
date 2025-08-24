@@ -1,6 +1,6 @@
 # Christ in Everything
 
-This is the official website of [Christ in Everything](https://christineverything.com).
+This is the official website of [Christ in Everything](https://christineverything.org).
 
 ## Quick Start
 
