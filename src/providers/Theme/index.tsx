@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useCallback, use, useEffect, useState } from 'react'
+import React, { createContext, use, useCallback, useEffect, useState } from 'react'
 
 import type { Theme, ThemeContextType } from './types'
 
@@ -15,10 +15,35 @@ const initialContext: ThemeContextType = {
 
 const ThemeContext = createContext(initialContext)
 
+const getInitialTheme = (): Theme => {
+  if (!canUseDOM) {
+    return defaultTheme
+  }
+
+  // Priority 1: localStorage value (if valid)
+  const preference = window.localStorage.getItem(themeLocalStorageKey)
+  if (themeIsValid(preference)) {
+    return preference
+  }
+
+  // Priority 2: DOM attribute (if available)
+  const domTheme = document.documentElement.getAttribute('data-theme') as Theme
+  if (themeIsValid(domTheme)) {
+    return domTheme
+  }
+
+  // Priority 3: Implicit preference (system preference)
+  const implicitPreference = getImplicitPreference()
+  if (implicitPreference) {
+    return implicitPreference
+  }
+
+  // Priority 4: Default theme
+  return defaultTheme
+}
+
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme | undefined>(
-    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
-  )
+  const [theme, setThemeState] = useState<Theme | undefined>(() => getInitialTheme())
 
   const setTheme = useCallback((themeToSet: Theme | null) => {
     if (themeToSet === null) {
@@ -34,22 +59,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    let themeToSet: Theme = defaultTheme
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
-
-    if (themeIsValid(preference)) {
-      themeToSet = preference
-    } else {
-      const implicitPreference = getImplicitPreference()
-
-      if (implicitPreference) {
-        themeToSet = implicitPreference
-      }
+    // Synchronize DOM attribute with current theme state
+    // State is already initialized correctly, so we only need to ensure DOM is in sync
+    if (theme && canUseDOM) {
+      document.documentElement.setAttribute('data-theme', theme)
     }
-
-    document.documentElement.setAttribute('data-theme', themeToSet)
-    setThemeState(themeToSet)
-  }, [])
+  }, [theme])
 
   return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>
 }
