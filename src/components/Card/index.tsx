@@ -1,6 +1,5 @@
 'use client'
 import { cn } from '@/utilities/ui'
-import useClickableCard from '@/utilities/useClickableCard'
 import Link from 'next/link'
 import React, { Fragment } from 'react'
 
@@ -18,7 +17,6 @@ export const Card: React.FC<{
   showCategories?: boolean
   title?: string
 }> = (props) => {
-  const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
   const { slug, categories, meta, title } = doc || {}
@@ -50,7 +48,6 @@ export const Card: React.FC<{
   return (
     <article
       className={cn('rounded-lg shadow-sm overflow-hidden bg-card hover:cursor-pointer', className)}
-      ref={card.ref}
     >
       <div className="relative w-full max-h-48 overflow-hidden">
         {metaImage && typeof metaImage === 'object' ? (
@@ -87,7 +84,7 @@ export const Card: React.FC<{
         {titleToUse && (
           <div className="prose">
             <h3>
-              <Link className="not-prose" href={href} ref={link.ref}>
+              <Link className="not-prose" href={href}>
                 {titleToUse}
               </Link>
             </h3>
