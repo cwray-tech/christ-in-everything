@@ -17,6 +17,10 @@ import { formatAuthors } from '@/utilities/formatAuthors'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
+// Enable ISR with on-demand revalidation
+export const dynamic = 'force-static'
+export const revalidate = false // Only revalidate on-demand via revalidatePath
+
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const posts = await payload.find({
