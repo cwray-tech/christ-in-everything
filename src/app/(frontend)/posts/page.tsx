@@ -7,6 +7,10 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import PageClient from './page.client'
 
+// Enable ISR with on-demand revalidation
+export const dynamic = 'force-static'
+export const revalidate = false // Only revalidate on-demand via revalidatePath
+
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 

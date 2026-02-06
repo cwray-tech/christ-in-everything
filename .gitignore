@@ -7,6 +7,10 @@ node_modules
 .vercel
 tsconfig.tsbuildinfo
 
+# TypeScript
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
 # Payload default media upload directory
 public/media/
 
