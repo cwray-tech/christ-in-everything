@@ -3,37 +3,7 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Page } from '../../../payload-types'
-
-const callRevalidateAPI = async (slug: string, operation: string) => {
-  try {
-    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
-    if (!serverUrl) {
-      console.error('NEXT_PUBLIC_SERVER_URL is not defined')
-      return
-    }
-
-    const response = await fetch(`${serverUrl}/api/revalidate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.PAYLOAD_SECRET}`,
-      },
-      body: JSON.stringify({
-        collection: 'pages',
-        slug,
-        operation,
-      }),
-    })
-
-    if (!response.ok) {
-      console.error('Failed to revalidate via API:', await response.text())
-    } else {
-      console.log('Successfully triggered revalidation via API')
-    }
-  } catch (error) {
-    console.error('Error calling revalidate API:', error)
-  }
-}
+import { callRevalidateAPI } from '../../../utilities/revalidate'
 
 export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   doc,
@@ -50,7 +20,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
       revalidateTag('pages-sitemap')
 
       // Also call the revalidation API as a backup
-      callRevalidateAPI(doc.slug, 'publish').catch((err) => {
+      callRevalidateAPI('pages', doc.slug, 'publish').catch((err) => {
         console.error('Failed to call revalidate API:', err)
       })
     }
@@ -65,7 +35,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
       revalidateTag('pages-sitemap')
 
       // Also call the revalidation API as a backup
-      callRevalidateAPI(previousDoc.slug, 'unpublish').catch((err) => {
+      callRevalidateAPI('pages', previousDoc.slug, 'unpublish').catch((err) => {
         console.error('Failed to call revalidate API:', err)
       })
     }
@@ -81,7 +51,7 @@ export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({ doc, req: { 
 
     // Also call the revalidation API as a backup
     if (doc?.slug) {
-      callRevalidateAPI(doc.slug, 'delete').catch((err) => {
+      callRevalidateAPI('pages', doc.slug, 'delete').catch((err) => {
         console.error('Failed to call revalidate API:', err)
       })
     }

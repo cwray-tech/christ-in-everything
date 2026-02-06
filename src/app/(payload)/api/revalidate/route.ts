@@ -1,12 +1,33 @@
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
+import { timingSafeEqual } from 'crypto'
 
 export async function POST(request: NextRequest) {
-  // Verify the request is authorized
+  // Verify the request is authorized using timing-safe comparison
   const authHeader = request.headers.get('authorization')
   const secret = process.env.PAYLOAD_SECRET
 
-  if (authHeader !== `Bearer ${secret}`) {
+  if (!authHeader || !secret) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+
+  const expectedAuth = `Bearer ${secret}`
+  
+  // Use timing-safe comparison to prevent timing attacks
+  try {
+    const authBuffer = Buffer.from(authHeader)
+    const expectedBuffer = Buffer.from(expectedAuth)
+    
+    // Ensure buffers are the same length before comparing
+    if (authBuffer.length !== expectedBuffer.length) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    }
+    
+    if (!timingSafeEqual(authBuffer, expectedBuffer)) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    }
+  } catch (error) {
+    console.error('Error during authentication:', error)
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
 
