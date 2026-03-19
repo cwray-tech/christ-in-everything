@@ -26,6 +26,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { convertVideoUrl } from './hooks/convertVideoUrl'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -83,6 +84,30 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+            },
+            {
+              name: 'videoLink',
+              type: 'text',
+              admin: {
+                description:
+                  "Here you can add a relevant video link of a sermon or talk. If a link is provided, we'll embed it on the post. You can paste any YouTube or Vimeo share link - it will be automatically converted to the embeddable format.",
+              },
+              validate: function (value: string | null | undefined) {
+                if (!value) return true
+                if (
+                  value.match(/^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]+/) ||
+                  value.match(/^https?:\/\/youtu\.be\/[\w-]+/) ||
+                  value.match(/^https?:\/\/(www\.)?youtube\.com\/embed\/[\w-]+/) ||
+                  value.match(/^https?:\/\/(www\.)?vimeo\.com\/\d+/) ||
+                  value.match(/^https?:\/\/player\.vimeo\.com\/video\/\d+/)
+                ) {
+                  return true
+                }
+                return 'Only YouTube or Vimeo links are allowed.'
+              },
+              hooks: {
+                beforeChange: [convertVideoUrl],
+              },
             },
             {
               name: 'content',

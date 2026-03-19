@@ -16,6 +16,7 @@ import { Series } from '@/payload-types'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
+import { VideoEmbed } from '@/components/VideoEmbed'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -73,7 +74,8 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          <div className="max-w-[48rem] mx-auto grid gap-6">
+          <div className="max-w-[48rem] mx-auto flex flex-col gap-6">
+            <VideoEmbed videoLink={post.videoLink} />
             <RichText data={post.content} enableGutter={false} />
             {hasSeries && (
               <div className="flex flex-col gap-4 p-6 bg-card rounded-lg border">
